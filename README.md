@@ -26,7 +26,7 @@ cf enable-feature-flag diego_docker
 ### 2. Deploy pgAdmin
 Deploy the pgAdmin web interface:
 ```bash
-cf push pgadmin-web --docker-image dpage/pgadmin4:latest -m 1G -k 1G --health-check-type process --no-start
+cf push pgadmin-web --docker-image dpage/pgadmin4:latest -m 1G -k 1G --health-check-type process --random-route --no-start
 ```
 
 ### 3. Configure Environment
@@ -43,8 +43,12 @@ cf start pgadmin-web
 ```
 
 ## Access
-After deployment, you can access pgAdmin through the route displayed in your CF console, typically:
-`https://pgadmin-web.<your-cf-domain>`
+After deployment, check your application's route using:
+```bash
+cf app pgadmin-web
+```
+The random route will be displayed in the output, typically in the format:
+`https://pgadmin-web-<random-string>.<your-cf-domain>`
 
 Log in using the email and password you set in the environment variables.
 
@@ -52,6 +56,7 @@ Log in using the email and password you set in the environment variables.
 - For production environments, consider using a specific version tag instead of `latest`
 - Ensure you use a strong password for the admin account
 - The application uses 1GB of memory by default
+- The random route ensures no conflicts with other deployments in the same domain
 
 ## Contributing
 Feel free to contribute to this project by submitting issues or pull requests.
